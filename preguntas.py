@@ -15,11 +15,11 @@ def read_files_and_create_dataframe(directory, nombreColumnaA, nombreColumnaB):
     for root, dirs, files in os.walk(directory):
         # Ignorar la carpeta __MACOSX y todas sus subcarpetas
         # if os.path.basename(root) == "__MACOSX":
-        print(f"carpetas: {os.path.basename(root)}")
+        # print(f"carpetas: {os.path.basename(root)}")
 
-        print(
-            f"Reading {len(files)} files from {root} with {len(dirs)} subdirectories."
-        )
+        # print(
+        #     f"Reading {len(files)} files from {root} with {len(dirs)} subdirectories."
+        # )
         for file in files:
             # print(f"Reading {file} from {root}")
             file_path = os.path.join(root, file)
