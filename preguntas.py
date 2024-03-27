@@ -4,33 +4,43 @@ import pandas as pd
 
 
 # Función para descomprimir el archivo ZIP
-def unzip_file(zip_file, destination_dir):
+def unzip_file(zip_file: str, destination_dir: str) -> None:
+    """
+    Unzip a file to a destination directory
+    :param zip_file: The path to the ZIP file
+    :param destination_dir: The destination directory
+
+    """
+    if not os.path.exists(zip_file):
+        raise FileNotFoundError(f"File {zip_file} not found")
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+
     with zipfile.ZipFile(zip_file, "r") as zip_ref:
         zip_ref.extractall(destination_dir)
 
 
-# Función para leer los archivos de texto y obtener los datos
-def read_files_and_create_dataframe(directory, nombreColumnaA, nombreColumnaB):
+def read_files_and_create_dataframe(
+    directory: str, nombreColumnaA: str, nombreColumnaB: str
+) -> None:
+    """
+    Read text files from a directory and create a DataFrame with the contents
+    :param directory: The directory containing the text files
+    :param nombreColumnaA: The name of the column for the text content
+    :param nombreColumnaB: The name of the column for the sentiment label
+
+    """
+
     rows = []
     for root, dirs, files in os.walk(directory):
-        # Ignorar la carpeta __MACOSX y todas sus subcarpetas
-        # if os.path.basename(root) == "__MACOSX":
-        # print(f"carpetas: {os.path.basename(root)}")
 
-        # print(
-        #     f"Reading {len(files)} files from {root} with {len(dirs)} subdirectories."
-        # )
         for file in files:
-            # print(f"Reading {file} from {root}")
+
             file_path = os.path.join(root, file)
-            # print(file_path)
-            if file.endswith(".txt") and not file.startswith(
-                "."
-            ):  # Leer solo archivos de texto y omitir archivos ocultos
+
+            if file.endswith(".txt") and not file.startswith("."):
                 try:
-                    sentiment = os.path.basename(
-                        root
-                    )  # Obtener la etiqueta de sentimiento desde el directorio padre
+                    sentiment = os.path.basename(root)
 
                     with open(file_path, "r", encoding="utf-8") as f:
                         text = f.read()
@@ -49,8 +59,10 @@ destination_directory = "./data/"
 unzip_file(zip_file_path, destination_directory)
 
 # Directorios de entrenamiento y prueba
-train_directory = os.path.join(destination_directory, "train")
-test_directory = os.path.join(destination_directory, "test")
+train_directory = os.path.join(destination_directory, "train/")
+
+test_directory = os.path.join(destination_directory, "test/")
+
 
 # Leer los archivos de entrenamiento y prueba y crear DataFrames
 train_df = read_files_and_create_dataframe(train_directory, "phrase", "sentiment")
