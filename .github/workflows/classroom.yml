@@ -14,13 +14,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Test
-      id: test
-      uses: education/autograding-python-grader@v1
-      with:
-        timeout: 10
-        max-score: 1
-        setup-command: 'pip3 install pyarrow pandas '
     - name: Test con run_command
       id: test-con-run_command
       uses: education/autograding-command-grader@v1
@@ -33,7 +26,6 @@ jobs:
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
       env:
-        TEST_RESULTS: "${{steps.test.outputs.result}}"
         TEST-CON-RUN_COMMAND_RESULTS: "${{steps.test-con-run_command.outputs.result}}"
       with:
-        runners: test,test-con-run_command
+        runners: test-con-run_command
