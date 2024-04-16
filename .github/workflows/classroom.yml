@@ -14,18 +14,18 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Test con run_command
-      id: test-con-run_command
+    - name: Test
+      id: test
       uses: education/autograding-command-grader@v1
       with:
-        test-name: Test con run_command
+        test-name: Test
         setup-command: 'pip3 install pyarrow pandas '
-        command: python3 test
+        command: python3 test.py
         timeout: 10
         max-score: 1
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
       env:
-        TEST-CON-RUN_COMMAND_RESULTS: "${{steps.test-con-run_command.outputs.result}}"
+        TEST_RESULTS: "${{steps.test.outputs.result}}"
       with:
-        runners: test-con-run_command
+        runners: test
